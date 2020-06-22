@@ -1,5 +1,6 @@
 package com.task.mailSender.mail;
 
+import com.sun.mail.smtp.SMTPTransport;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -8,10 +9,8 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.awt.geom.AffineTransform;
 import java.util.Date;
 import java.util.Properties;
-import com.sun.mail.smtp.SMTPTransport;
 
 @Component("smtp")
 public class SmtpMailer implements Mailer{
@@ -54,6 +53,7 @@ public class SmtpMailer implements Mailer{
         t.sendMessage(msg, msg.getAllRecipients());
     }
 
+    @Override
     public void mailerConnct() throws MessagingException {
 
         this.t.connect("smtp.gmail.com", this.fromUser, this.password);
@@ -72,6 +72,7 @@ public class SmtpMailer implements Mailer{
         this.subject = subject;
     }
 
+    @Override
     public String getMsgBody() {
         return msgBody;
     }
@@ -80,7 +81,14 @@ public class SmtpMailer implements Mailer{
         return fromUser;
     }
 
+    @Override
     public String getSubject() {
         return subject;
+    }
+
+    @Override
+    public void setTextAndSubject(String body, String subject) {
+        setMsgBody(body);
+        setSubject(subject);
     }
 }
